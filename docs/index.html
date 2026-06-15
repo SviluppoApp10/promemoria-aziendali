@@ -942,6 +942,54 @@ document.getElementById('user-modal').addEventListener('click', function(e) {
   if (e.target === this) closeUserModal();
 });
 
+// ============================================================
+// NOTIFICHE BROWSER
+// ============================================================
+function initNotifications() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+function checkReminders() {
+  if (Notification.permission !== 'granted') return;
+  const events = getEvents();
+  const now = new Date();
+  const notified = JSON.parse(localStorage.getItem('pa_notified') || '[]');
+
+  events.forEach(e => {
+    if (!e.reminder_datetime || e.reminder_sent) return;
+    if (notified.includes(e.id)) return;
+
+    const reminderTime = new Date(e.reminder_datetime);
+    const diffMinutes = (reminderTime - now) / 60000;
+
+    // Notifica se il promemoria è tra -5 e +5 minuti
+    if (diffMinutes >= -5 && diffMinutes <= 5) {
+      const n = new Notification('🔔 Promemoria Aziendali', {
+        body: `${e.title}\n${e.collaborator_name} — ${formatDate(e.event_date)} alle ${e.event_time}`,
+        icon: 'https://lorybiagio14.github.io/promemoria-aziendali/icon.png',
+        tag: 'reminder-' + e.id,
+      });
+      n.onclick = function() { window.focus(); showPage('events'); };
+      notified.push(e.id);
+      localStorage.setItem('pa_notified', JSON.stringify(notified));
+
+      // Segna come inviato
+      const allEvents = getEvents();
+      const idx = allEvents.findIndex(ev => ev.id === e.id);
+      if (idx !== -1) {
+        allEvents[idx].reminder_sent = true;
+        saveEvents(allEvents);
+      }
+    }
+  });
+}
+
+// Controlla ogni minuto
+setInterval(checkReminders, 60000);
+
 // Auto-login se sessione attiva
 window.onload = function() {
   const user = getCurrentUser();
@@ -954,6 +1002,8 @@ window.onload = function() {
       document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
     }
     initApp();
+  initNotifications();
+  checkReminders();
   }
 };
 </script>
