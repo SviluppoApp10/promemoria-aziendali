@@ -213,6 +213,11 @@
       <button class="btn-logout" onclick="doLogout()">Esci</button>
     </div>
   </div>
+  <!-- BANNER PROMEMORIA OGGI -->
+  <div id="reminder-banner" style="display:none;background:#ff6f00;color:white;padding:12px 24px;font-size:14px;font-weight:600;cursor:pointer" onclick="showPage('events')">
+    🔔 <span id="reminder-banner-text"></span> — Clicca per vedere
+  </div>
+
   <div class="nav-tabs" id="nav-tabs">
     <div class="nav-tab active" onclick="showPage('dashboard')">📊 Dashboard</div>
     <div class="nav-tab" onclick="showPage('events')">📅 Eventi</div>
@@ -990,6 +995,32 @@ function checkReminders() {
 // Controlla ogni minuto
 setInterval(checkReminders, 60000);
 
+function checkTodayReminders() {
+  const events = getEvents();
+  const today = new Date().toISOString().split('T')[0];
+  const now = new Date();
+
+  const todayReminders = events.filter(e => {
+    if (!e.reminder_datetime || e.reminder_sent) return false;
+    const r = new Date(e.reminder_datetime);
+    return r.toISOString().split('T')[0] === today && r >= now;
+  });
+
+  const banner = document.getElementById('reminder-banner');
+  const bannerText = document.getElementById('reminder-banner-text');
+
+  if (todayReminders.length > 0) {
+    banner.style.display = 'block';
+    if (todayReminders.length === 1) {
+      bannerText.textContent = `Hai 1 promemoria oggi: "${todayReminders[0].title}" per ${todayReminders[0].collaborator_name}`;
+    } else {
+      bannerText.textContent = `Hai ${todayReminders.length} promemoria in scadenza oggi`;
+    }
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
 // Auto-login se sessione attiva
 window.onload = function() {
   const user = getCurrentUser();
@@ -1004,6 +1035,8 @@ window.onload = function() {
     initApp();
   initNotifications();
   checkReminders();
+  checkTodayReminders();
+  setInterval(checkTodayReminders, 60000);
   }
 };
 </script>
