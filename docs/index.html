@@ -454,8 +454,8 @@ function daysFromNow(n) {
 // ============================================================
 // STORAGE
 // ============================================================
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwCZ9TbdUBW5Pf7MAdXkaKfW2QDa61oymMfaWyRCGB3J_zl0UccmRub-QhWLIx9WT-Q/exec';
-const SHEET_ID = '1x5hEjNCiLj1xxI07sC8Xxv89YFQYeTJf7PJexkURD0M';
+const SUPABASE_URL = 'https://romapyverjkivxdbgdrw.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJvbWFweXZlcmpraXZ4ZGJnZHJ3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NzgxMjYsImV4cCI6MjA5NzE1NDEyNn0.v3Z8qG16ztVWpCktQjuOHwhrSehaE0Lmb_KbsyHh-H8';
 
 let eventsCache = [];
 
@@ -470,20 +470,23 @@ function getEvents() {
 }
 function saveEvents(e) { eventsCache = e; }
 
+function sbHeaders() {
+  return {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': 'Bearer ' + SUPABASE_KEY
+  };
+}
+
 async function loadEventsFromSheets() {
   try {
-    const url = `${SCRIPT_URL}?action=getEvents&sheetId=${SHEET_ID}`;
-    const res = await fetch(url);
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/events?select=*&order=event_date.asc`, { headers: sbHeaders() });
     const data = await res.json();
-    if (data.events) {
-      eventsCache = data.events.map(e => ({
-        ...e,
-        id: Number(e.id),
-        reminder_sent: e.reminder_sent === true || e.reminder_sent === 'true' || e.reminder_sent === 'TRUE'
-      }));
+    if (Array.isArray(data)) {
+      eventsCache = data.map(e => ({ ...e, reminder_sent: !!e.reminder_sent }));
     }
   } catch(err) {
-    console.error('Errore caricamento sheet:', err);
+    console.error('Errore caricamento Supabase:', err);
     const s = localStorage.getItem('pa_events');
     eventsCache = s ? JSON.parse(s) : DEFAULT_EVENTS;
   }
@@ -491,16 +494,31 @@ async function loadEventsFromSheets() {
 
 async function saveEventToSheets(event) {
   try {
-    const url = `${SCRIPT_URL}?action=saveEvent&sheetId=${SHEET_ID}&data=${encodeURIComponent(JSON.stringify(event))}`;
-    await fetch(url);
-  } catch(err) { console.error('Errore salvataggio sheet:', err); }
+    if (event.id) {
+      const { id, created_at, ...rest } = event;
+      await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${id}`, {
+        method: 'PATCH',
+        headers: sbHeaders(),
+        body: JSON.stringify(rest)
+      });
+    } else {
+      const { id, created_at, ...rest } = event;
+      await fetch(`${SUPABASE_URL}/rest/v1/events`, {
+        method: 'POST',
+        headers: sbHeaders(),
+        body: JSON.stringify(rest)
+      });
+    }
+  } catch(err) { console.error('Errore salvataggio Supabase:', err); }
 }
 
 async function deleteEventFromSheets(id) {
   try {
-    const url = `${SCRIPT_URL}?action=deleteEvent&sheetId=${SHEET_ID}&id=${id}`;
-    await fetch(url);
-  } catch(err) { console.error('Errore eliminazione sheet:', err); }
+    await fetch(`${SUPABASE_URL}/rest/v1/events?id=eq.${id}`, {
+      method: 'DELETE',
+      headers: sbHeaders()
+    });
+  } catch(err) { console.error('Errore eliminazione Supabase:', err); }
 }
 
 function getCurrentUser() {
@@ -791,24 +809,27 @@ function saveEvent() {
       title, description: document.getElementById('ev-desc').value,
       event_date: date, event_time: time,
       reminder_datetime: reminder || '',
-      reminder_sent: reminderSent,
-      updated_at: new Date().toISOString()
+      reminder_sent: reminderSent
     };
+    saveEvents(events);
+    saveEventToSheets(events[idx]);
   } else {
-    const newId = Math.max(0, ...events.map(e => e.id)) + 1;
-    events.push({
-      id: newId, collaborator_name: name, collaborator_email: email,
+    const newEvent = {
+      collaborator_name: name, collaborator_email: email,
       title, description: document.getElementById('ev-desc').value,
       event_date: date, event_time: time,
       reminder_datetime: reminder || '',
       reminder_sent: false,
-      created_at: new Date().toISOString()
-    });
+      created_by: currentUser ? currentUser.username : ''
+    };
+    saveEventToSheets(newEvent).then(() => loadEventsFromSheets().then(() => { renderEvents(); renderDashboard(); }));
+    closeEventModal();
+    populateCollabFilter();
+    populateMonthFilter();
+    return;
   }
 
   saveEvents(events);
-  const savedEvent = editingEventId ? events.find(e => e.id === editingEventId) : events[events.length-1];
-  saveEventToSheets(savedEvent);
   closeEventModal();
   populateCollabFilter();
   populateMonthFilter();
