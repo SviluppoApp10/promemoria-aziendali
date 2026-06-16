@@ -678,7 +678,8 @@ function renderEvents() {
           ? `<span class="badge ${e.reminder_sent ? 'badge-success' : 'badge-warning'}">${e.reminder_sent ? 'Inviato' : 'In attesa'}</span>`
           : `<span class="badge" style="background:#f5f5f5;color:#999">Nessuno</span>`}
       </td>
-      <td>
+      <td style="white-space:nowrap">
+        ${e.collaborator_email && !e.reminder_sent ? `<button class="btn btn-sm" style="background:#e65100;color:white;margin-right:4px" onclick="sendManualReminder(${e.id})" title="Invia promemoria ora">📧</button>` : ''}
         <button class="btn btn-outline btn-sm" onclick="openEventModal(${e.id})" style="margin-right:4px">✏️</button>
         <button class="btn btn-danger btn-sm" onclick="deleteEvent(${e.id})">🗑️</button>
       </td>
@@ -987,6 +988,14 @@ function checkReminders() {
       sendReminderEmail(e);
     }
   });
+}
+
+function sendManualReminder(id) {
+  const e = getEvents().find(ev => ev.id === id);
+  if (!e) return;
+  if (!confirm(`Inviare promemoria a ${e.collaborator_email}?`)) return;
+  sendReminderEmail(e);
+  alert('Email inviata a ' + e.collaborator_email);
 }
 
 // Invia email tramite EmailJS
