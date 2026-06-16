@@ -459,10 +459,9 @@ let usersCache = [];
 function getUsers() { return usersCache; }
 function saveUsers(u) { usersCache = u; }
 
-async function loadUsersFromSupabase(workspaceId) {
+async function loadUsersFromSupabase() {
   try {
-    const wsId = workspaceId || currentWorkspace || 1;
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/users?select=*&workspace_id=eq.${wsId}`, { headers: sbHeaders() });
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/users?select=*`, { headers: sbHeaders() });
     const data = await res.json();
     if (Array.isArray(data)) usersCache = data;
   } catch(err) { console.error('Errore caricamento utenti:', err); }
