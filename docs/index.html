@@ -184,33 +184,12 @@
 </head>
 <body>
 
-<!-- SELEZIONE WORKSPACE -->
-<div id="workspace-page" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1565c0,#42a5f5)">
+<!-- LOGIN -->
+<div id="login-page" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1565c0,#42a5f5)">
   <div class="login-card">
     <div class="login-logo">
       <div class="icon">🏢</div>
       <h1>Promemoria Aziendali</h1>
-      <p>Seleziona lo spazio di lavoro</p>
-    </div>
-    <div class="form-group">
-      <label>Spazio di lavoro</label>
-      <select id="ws-select"><option value="">Caricamento...</option></select>
-    </div>
-    <div class="form-group">
-      <label>Password spazio</label>
-      <input type="password" id="ws-password" placeholder="Inserisci password" onkeydown="if(event.key==='Enter') doSelectWorkspace()" />
-    </div>
-    <button class="btn btn-primary" onclick="doSelectWorkspace()">Continua</button>
-    <div class="error-msg" id="ws-error"></div>
-  </div>
-</div>
-
-<!-- LOGIN -->
-<div id="login-page" style="display:none">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="icon">🏢</div>
-      <h1 id="login-workspace-name">Promemoria Aziendali</h1>
       <p>Accedi al tuo account</p>
     </div>
     <div class="form-group">
@@ -222,9 +201,6 @@
       <input type="password" id="login-pass" placeholder="Inserisci password" onkeydown="if(event.key==='Enter') doLogin()" />
     </div>
     <button class="btn btn-primary" onclick="doLogin()">Accedi</button>
-    <div style="text-align:center;margin-top:12px">
-      <a href="#" onclick="backToWorkspace()" style="color:#1976d2;font-size:13px">← Cambia spazio di lavoro</a>
-    </div>
     <div class="error-msg" id="login-error"></div>
   </div>
 </div>
@@ -582,46 +558,12 @@ function getCurrentUser() {
 // AUTH
 // ============================================================
 let currentUser = null;
-let currentWorkspace = null;
-let workspacesData = [];
-
-async function loadWorkspaces() {
-  try {
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/workspaces?select=*&order=name.asc`, { headers: sbHeaders() });
-    workspacesData = await res.json();
-    const sel = document.getElementById('ws-select');
-    sel.innerHTML = workspacesData.map(w => `<option value="${w.id}">${w.name}</option>`).join('');
-  } catch(err) { console.error('Errore caricamento workspace:', err); }
-}
-
-async function doSelectWorkspace() {
-  const wsId = parseInt(document.getElementById('ws-select').value);
-  const wsPass = document.getElementById('ws-password').value;
-  const ws = workspacesData.find(w => w.id === wsId);
-  if (!ws) { document.getElementById('ws-error').textContent = 'Seleziona uno spazio'; return; }
-  if (ws.password !== wsPass) { document.getElementById('ws-error').textContent = 'Password errata'; return; }
-  currentWorkspace = wsId;
-  sessionStorage.setItem('pa_workspace', String(wsId));
-  document.getElementById('workspace-page').style.display = 'none';
-  document.getElementById('login-page').style.display = 'flex';
-  document.getElementById('login-workspace-name').textContent = ws.name;
-  document.getElementById('ws-error').textContent = '';
-  document.getElementById('ws-password').value = '';
-}
-
-function backToWorkspace() {
-  document.getElementById('login-page').style.display = 'none';
-  document.getElementById('workspace-page').style.display = 'flex';
-  document.getElementById('login-user').value = '';
-  document.getElementById('login-pass').value = '';
-  document.getElementById('login-error').textContent = '';
-}
 
 async function doLogin() {
   const username = document.getElementById('login-user').value.trim();
   const password = document.getElementById('login-pass').value;
   document.getElementById('login-error').textContent = 'Accesso in corso...';
-  await loadUsersFromSupabase(currentWorkspace);
+  await loadUsersFromSupabase();
   const users = getUsers();
   const user = users.find(u => u.username === username && u.password === password);
   if (!user) {
@@ -632,8 +574,7 @@ async function doLogin() {
   sessionStorage.setItem('pa_current', JSON.stringify(user));
   document.getElementById('login-page').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  const ws = workspacesData.find(w => w.id === currentWorkspace);
-  document.getElementById('topbar-username').textContent = '👤 ' + user.name + (ws ? ' — ' + ws.name : '');
+  document.getElementById('topbar-username').textContent = '👤 ' + user.name;
   if (user.role === 'admin') {
     document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
   }
@@ -642,11 +583,8 @@ async function doLogin() {
 
 function doLogout() {
   sessionStorage.removeItem('pa_current');
-  sessionStorage.removeItem('pa_workspace');
   currentUser = null;
-  currentWorkspace = null;
-  document.getElementById('workspace-page').style.display = 'flex';
-  document.getElementById('login-page').style.display = 'none';
+  document.getElementById('login-page').style.display = 'flex';
   document.getElementById('app').style.display = 'none';
   document.getElementById('login-user').value = '';
   document.getElementById('login-pass').value = '';
@@ -1207,18 +1145,13 @@ function checkTodayReminders() {
 }
 
 // Auto-login se sessione attiva
-window.onload = async function() {
-  await loadWorkspaces();
+window.onload = function() {
   const user = getCurrentUser();
-  const savedWs = sessionStorage.getItem('pa_workspace');
-  if (user && savedWs) {
+  if (user) {
     currentUser = user;
-    currentWorkspace = parseInt(savedWs);
-    const ws = workspacesData.find(w => w.id === currentWorkspace);
-    document.getElementById('workspace-page').style.display = 'none';
     document.getElementById('login-page').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    document.getElementById('topbar-username').textContent = '👤 ' + user.name + (ws ? ' — ' + ws.name : '');
+    document.getElementById('topbar-username').textContent = '👤 ' + user.name;
     if (user.role === 'admin') {
       document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
     }
