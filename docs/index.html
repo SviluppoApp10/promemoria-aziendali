@@ -1000,7 +1000,7 @@ function sendManualReminder(id) {
 
 // Invia email tramite EmailJS
 function sendReminderEmail(event) {
-  emailjs.send('1324', '1324', {
+  emailjs.send('1324', 'template_50vus3s', {
     collaboratore: event.collaborator_name,
     titolo: event.title,
     descrizione: event.description || 'Nessuna nota',
