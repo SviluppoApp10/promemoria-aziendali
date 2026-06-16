@@ -15,15 +15,15 @@
   #workspace-page, #login-page { min-height:100vh; display:flex; align-items:center; justify-content:center; background:var(--dark); }
   .login-card { background:var(--white); border-radius:20px; padding:44px 36px; width:100%; max-width:380px; margin:20px; }
   .login-logo { text-align:center; margin-bottom:32px; }
-  .login-logo .icon { width:54px; height:54px; background:var(--dark); border-radius:12px; display:inline-flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:14px; border:2px solid var(--gold); }
-  .login-logo h1 { font-size:19px; font-weight:800; color:var(--dark); letter-spacing:1px; text-transform:uppercase; }
-  .login-logo p { color:var(--muted); font-size:13px; margin-top:5px; }
-  .form-group { margin-bottom:14px; }
-  .form-group label { display:block; font-size:10px; font-weight:700; color:var(--mid); margin-bottom:6px; letter-spacing:1.2px; text-transform:uppercase; }
-  .form-group input, .form-group select, .form-group textarea { width:100%; padding:13px 16px; border:1.5px solid var(--border); border-radius:var(--rsm); font-size:14px; font-family:inherit; background:#faf8f5; transition:border-color 0.2s; color:var(--dark); }
+  .login-logo .icon { width:72px; height:72px; display:inline-flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .login-logo h1 { font-size:24px; font-weight:800; color:var(--dark); letter-spacing:1px; text-transform:uppercase; }
+  .login-logo p { color:var(--muted); font-size:15px; margin-top:6px; }
+  .form-group { margin-bottom:16px; }
+  .form-group label { display:block; font-size:13px; font-weight:700; color:var(--mid); margin-bottom:7px; letter-spacing:1px; text-transform:uppercase; }
+  .form-group input, .form-group select, .form-group textarea { width:100%; padding:14px 16px; border:1.5px solid var(--border); border-radius:var(--rsm); font-size:16px; font-family:inherit; background:#faf8f5; transition:border-color 0.2s; color:var(--dark); }
   .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:var(--gold); }
-  .btn { padding:12px 24px; border:none; border-radius:var(--rsm); font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; }
-  .btn-primary { background:var(--dark); color:var(--white); width:100%; padding:15px; font-size:12px; letter-spacing:2px; text-transform:uppercase; border-radius:var(--rsm); }
+  .btn { padding:13px 24px; border:none; border-radius:var(--rsm); font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .btn-primary { background:var(--dark); color:var(--white); width:100%; padding:16px; font-size:14px; letter-spacing:2px; text-transform:uppercase; border-radius:var(--rsm); }
   .btn-primary:hover { background:#2a2a2a; }
   .btn-success { background:var(--gold); color:var(--dark); font-weight:800; }
   .btn-success:hover { background:#c09638; }
@@ -31,87 +31,87 @@
   .btn-danger:hover { background:#b71c1c; }
   .btn-outline { background:transparent; border:1.5px solid var(--dark); color:var(--dark); }
   .btn-outline:hover { background:var(--bg); }
-  .btn-sm { padding:7px 14px; font-size:11px; }
-  .error-msg { color:#c62828; font-size:13px; margin-top:10px; text-align:center; }
+  .btn-sm { padding:8px 16px; font-size:13px; }
+  .error-msg { color:#c62828; font-size:14px; margin-top:10px; text-align:center; }
   .login-back { text-align:center; margin-top:14px; }
-  .login-back a { color:var(--muted); font-size:12px; text-decoration:none; }
+  .login-back a { color:var(--muted); font-size:13px; text-decoration:none; }
 
   /* APP */
   #app { display:none; min-height:100vh; }
   .topbar { background:var(--dark); color:var(--white); padding:0 20px; display:flex; align-items:center; justify-content:space-between; height:56px; position:sticky; top:0; z-index:100; gap:12px; }
   .topbar-logo { display:flex; align-items:center; gap:10px; }
   .topbar-logo-mark { width:30px; height:30px; background:var(--gold); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:900; color:var(--dark); flex-shrink:0; }
-  .topbar-logo-text { font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#f0ede8; white-space:nowrap; }
+  .topbar-logo-text { font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#f0ede8; white-space:nowrap; }
   .topbar-right { display:flex; align-items:center; gap:8px; flex-shrink:0; }
-  .topbar-user { display:flex; align-items:center; gap:7px; background:#2a2a2a; border:1px solid #3a3a3a; padding:6px 12px; border-radius:20px; font-size:11px; color:#aaa; max-width:170px; overflow:hidden; }
-  .topbar-user-dot { width:6px; height:6px; background:var(--gold); border-radius:50%; flex-shrink:0; }
+  .topbar-user { display:flex; align-items:center; gap:7px; background:#2a2a2a; border:1px solid #3a3a3a; padding:7px 14px; border-radius:20px; font-size:13px; color:#aaa; max-width:190px; overflow:hidden; }
+  .topbar-user-dot { width:7px; height:7px; background:var(--gold); border-radius:50%; flex-shrink:0; }
   .topbar-user-name { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-  .btn-logout { background:transparent; color:#666; border:1px solid #333; padding:6px 12px; border-radius:20px; cursor:pointer; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; white-space:nowrap; }
+  .btn-logout { background:transparent; color:#666; border:1px solid #333; padding:7px 14px; border-radius:20px; cursor:pointer; font-size:12px; letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
   .btn-logout:hover { color:var(--gold); border-color:var(--gold); }
 
-  #reminder-banner { background:var(--gold); color:var(--dark); padding:10px 20px; font-size:13px; font-weight:700; text-align:center; }
+  #reminder-banner { background:var(--gold); color:var(--dark); padding:11px 20px; font-size:14px; font-weight:700; text-align:center; }
 
   .nav-tabs { background:var(--dark); display:flex; padding:0 20px; overflow-x:auto; scrollbar-width:none; -ms-overflow-style:none; border-bottom:1px solid #2a2a2a; }
   .nav-tabs::-webkit-scrollbar { display:none; }
-  .nav-tab { padding:13px 16px; cursor:pointer; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:#555; border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap; transition:color 0.2s; flex:1; text-align:center; }
+  .nav-tab { padding:14px 16px; cursor:pointer; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#555; border-bottom:2px solid transparent; margin-bottom:-1px; white-space:nowrap; transition:color 0.2s; flex:1; text-align:center; }
   .nav-tab:hover { color:#888; }
   .nav-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
 
   .main { padding:20px; max-width:1200px; margin:0 auto; }
   .page { display:none; }
   .page.active { display:block; }
-  .page-title { font-size:20px; font-weight:800; color:var(--dark); letter-spacing:0.5px; text-transform:uppercase; }
+  .page-title { font-size:22px; font-weight:800; color:var(--dark); letter-spacing:0.5px; text-transform:uppercase; }
 
-  .card { background:var(--white); border-radius:var(--radius); padding:20px; border:1px solid var(--border); margin-bottom:16px; }
-  .card-title { font-size:11px; font-weight:700; color:var(--dark); margin-bottom:14px; letter-spacing:1.5px; text-transform:uppercase; }
+  .card { background:var(--white); border-radius:var(--radius); padding:22px; border:1px solid var(--border); margin-bottom:16px; }
+  .card-title { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:14px; letter-spacing:1.2px; text-transform:uppercase; }
 
   .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:20px; }
-  .stat-card { background:var(--white); border-radius:var(--radius); padding:18px 16px; border:1px solid var(--border); }
-  .stat-value { font-size:32px; font-weight:900; color:var(--dark); line-height:1; }
+  .stat-card { background:var(--white); border-radius:var(--radius); padding:20px 18px; border:1px solid var(--border); }
+  .stat-value { font-size:36px; font-weight:900; color:var(--dark); line-height:1; }
   .stat-value.gold { color:var(--gold); }
-  .stat-label { font-size:10px; color:var(--muted); margin-top:4px; text-transform:uppercase; letter-spacing:0.8px; }
-  .stat-bar { height:3px; background:var(--bg); border-radius:2px; margin-top:12px; }
+  .stat-label { font-size:12px; color:var(--muted); margin-top:5px; text-transform:uppercase; letter-spacing:0.8px; }
+  .stat-bar { height:3px; background:var(--bg); border-radius:2px; margin-top:14px; }
   .stat-bar-fill { height:3px; background:var(--gold); border-radius:2px; }
 
   .table-container { overflow-x:auto; }
-  table { width:100%; border-collapse:collapse; font-size:13px; }
-  th { background:#faf8f5; padding:10px 14px; text-align:left; font-size:10px; font-weight:700; color:var(--muted); border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:1px; }
-  td { padding:12px 14px; border-bottom:1px solid var(--border); vertical-align:middle; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th { background:#faf8f5; padding:11px 14px; text-align:left; font-size:12px; font-weight:700; color:var(--muted); border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:0.8px; }
+  td { padding:13px 14px; border-bottom:1px solid var(--border); vertical-align:middle; font-size:14px; }
   tr:hover td { background:#faf8f5; }
-  .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:10px; font-weight:700; }
+  .badge { display:inline-block; padding:4px 12px; border-radius:20px; font-size:12px; font-weight:700; }
   .badge-success { background:#e8f5e9; color:#2e7d32; }
   .badge-warning { background:#fff8e1; color:#b45309; }
   .badge-info { background:#f0ede8; color:var(--dark); }
   .badge-danger { background:#ffebee; color:#c62828; }
 
   .filters { background:var(--white); border-radius:var(--radius); padding:14px 16px; border:1px solid var(--border); margin-bottom:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
-  .filters input, .filters select { padding:8px 12px; border:1.5px solid var(--border); border-radius:var(--rsm); font-size:13px; font-family:inherit; background:#faf8f5; color:var(--dark); }
+  .filters input, .filters select { padding:9px 13px; border:1.5px solid var(--border); border-radius:var(--rsm); font-size:14px; font-family:inherit; background:#faf8f5; color:var(--dark); }
   .filters input:focus, .filters select:focus { outline:none; border-color:var(--gold); }
 
   .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:1000; align-items:center; justify-content:center; padding:20px; }
   .modal-overlay.open { display:flex; }
-  .modal { background:var(--white); border-radius:20px; padding:28px; width:100%; max-width:540px; max-height:90vh; overflow-y:auto; }
-  .modal-title { font-size:13px; font-weight:800; margin-bottom:22px; color:var(--dark); letter-spacing:2px; text-transform:uppercase; }
+  .modal { background:var(--white); border-radius:20px; padding:30px; width:100%; max-width:540px; max-height:90vh; overflow-y:auto; }
+  .modal-title { font-size:15px; font-weight:800; margin-bottom:22px; color:var(--dark); letter-spacing:1.5px; text-transform:uppercase; }
   .modal-actions { display:flex; gap:10px; justify-content:flex-end; margin-top:22px; }
   .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
 
   .calendar-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:8px; }
   .calendar-nav { display:flex; gap:8px; }
-  .btn-nav { background:var(--bg); color:var(--dark); border:1px solid var(--border); padding:8px 14px; border-radius:var(--rsm); cursor:pointer; font-size:16px; font-weight:700; }
+  .btn-nav { background:var(--bg); color:var(--dark); border:1px solid var(--border); padding:9px 16px; border-radius:var(--rsm); cursor:pointer; font-size:18px; font-weight:700; }
   .btn-nav:hover { border-color:var(--gold); color:var(--gold); }
-  .calendar-month { font-size:15px; font-weight:800; color:var(--dark); letter-spacing:0.5px; text-transform:uppercase; }
+  .calendar-month { font-size:17px; font-weight:800; color:var(--dark); letter-spacing:0.5px; text-transform:uppercase; }
   .calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:3px; }
-  .cal-day-name { text-align:center; font-size:10px; font-weight:700; color:var(--muted); padding:6px 0; text-transform:uppercase; }
+  .cal-day-name { text-align:center; font-size:11px; font-weight:700; color:var(--muted); padding:7px 0; text-transform:uppercase; }
   .cal-day { min-height:72px; border:1px solid var(--border); border-radius:var(--rsm); padding:5px; background:var(--white); }
   .cal-day.today { background:#faf5e8; border-color:var(--gold); }
   .cal-day.other-month { background:#faf8f5; opacity:0.5; }
-  .cal-day-num { font-size:11px; font-weight:700; color:var(--dark); margin-bottom:3px; }
+  .cal-day-num { font-size:13px; font-weight:700; color:var(--dark); margin-bottom:3px; }
   .cal-day.today .cal-day-num { color:var(--gold); }
-  .cal-event { background:var(--dark); color:var(--white); font-size:9px; padding:2px 5px; border-radius:4px; margin-bottom:2px; cursor:pointer; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .cal-event { background:var(--dark); color:var(--white); font-size:10px; padding:2px 5px; border-radius:4px; margin-bottom:2px; cursor:pointer; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .cal-event.sent { background:var(--gold); color:var(--dark); }
 
   .top-bar-actions { display:flex; gap:12px; align-items:center; margin-bottom:18px; justify-content:space-between; flex-wrap:wrap; }
-  .empty-state { text-align:center; padding:48px; color:var(--muted); font-size:14px; }
+  .empty-state { text-align:center; padding:48px; color:var(--muted); font-size:15px; }
   .empty-state .icon { font-size:48px; margin-bottom:12px; }
   .search-highlight { background:#fff8e1; }
 
@@ -119,21 +119,21 @@
     .main { padding:12px; }
     .grid-2 { grid-template-columns:1fr; }
     .stats-grid { grid-template-columns:repeat(2,1fr); gap:8px; }
-    .stat-card { padding:14px 12px; }
-    .stat-value { font-size:26px; }
+    .stat-card { padding:16px 14px; }
+    .stat-value { font-size:30px; }
     .modal { padding:20px; border-radius:16px; }
-    td, th { padding:9px 10px; }
+    td, th { padding:10px; }
     .card { padding:16px; }
     .dashboard-bottom { grid-template-columns:1fr !important; }
-    .cal-day { min-height:50px; padding:3px; }
-    .cal-day-name { font-size:9px; }
-    .cal-day-num { font-size:10px; }
-    .cal-event { font-size:8px; padding:1px 3px; }
-    .page-title { font-size:16px; }
+    .cal-day { min-height:52px; padding:3px; }
+    .cal-day-name { font-size:10px; }
+    .cal-day-num { font-size:12px; }
+    .cal-event { font-size:9px; padding:1px 3px; }
+    .page-title { font-size:18px; }
     .filters { padding:12px; gap:8px; }
     .topbar { padding:0 14px; }
     .topbar-logo-text { display:none; }
-    .nav-tab { font-size:9px; padding:12px 10px; letter-spacing:1px; }
+    .nav-tab { font-size:11px; padding:13px 10px; letter-spacing:0.8px; }
   }
 </style>
 </head>
@@ -143,7 +143,24 @@
 <div id="workspace-page">
   <div class="login-card">
     <div class="login-logo">
-      <div class="icon">PA</div>
+      <div class="icon"><svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- corpo centrale fenice -->
+  <path d="M22 36 C22 36 14 28 14 20 C14 15 17 11 22 10 C27 11 30 15 30 20 C30 28 22 36 22 36Z" fill="#d4a843" opacity="0.15"/>
+  <!-- ala sinistra -->
+  <path d="M22 18 C18 14 12 14 8 18 C10 16 14 17 16 20 C13 19 9 21 8 26 C11 22 16 22 18 24" stroke="#d4a843" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- ala destra -->
+  <path d="M22 18 C26 14 32 14 36 18 C34 16 30 17 28 20 C31 19 35 21 36 26 C33 22 28 22 26 24" stroke="#d4a843" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- corpo -->
+  <path d="M22 10 C19 13 18 16 18 20 C18 24 20 28 22 32 C24 28 26 24 26 20 C26 16 25 13 22 10Z" stroke="#d4a843" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- testa -->
+  <circle cx="22" cy="9" r="2.5" fill="#d4a843"/>
+  <!-- fiamma base -->
+  <path d="M19 34 C19 34 20 37 22 38 C24 37 25 34 25 34" stroke="#d4a843" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  <!-- fiammelle -->
+  <path d="M22 38 C22 38 21 41 22 42 C23 41 22 38 22 38Z" fill="#d4a843" opacity="0.6"/>
+  <path d="M19 36 C18 38 19 40 19 40" stroke="#d4a843" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+  <path d="M25 36 C26 38 25 40 25 40" stroke="#d4a843" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+</svg></div>
       <h1>Promemoria</h1>
       <p>Seleziona lo spazio di lavoro</p>
     </div>
@@ -164,7 +181,24 @@
 <div id="login-page" style="display:none">
   <div class="login-card">
     <div class="login-logo">
-      <div class="icon">PA</div>
+      <div class="icon"><svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- corpo centrale fenice -->
+  <path d="M22 36 C22 36 14 28 14 20 C14 15 17 11 22 10 C27 11 30 15 30 20 C30 28 22 36 22 36Z" fill="#d4a843" opacity="0.15"/>
+  <!-- ala sinistra -->
+  <path d="M22 18 C18 14 12 14 8 18 C10 16 14 17 16 20 C13 19 9 21 8 26 C11 22 16 22 18 24" stroke="#d4a843" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- ala destra -->
+  <path d="M22 18 C26 14 32 14 36 18 C34 16 30 17 28 20 C31 19 35 21 36 26 C33 22 28 22 26 24" stroke="#d4a843" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- corpo -->
+  <path d="M22 10 C19 13 18 16 18 20 C18 24 20 28 22 32 C24 28 26 24 26 20 C26 16 25 13 22 10Z" stroke="#d4a843" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- testa -->
+  <circle cx="22" cy="9" r="2.5" fill="#d4a843"/>
+  <!-- fiamma base -->
+  <path d="M19 34 C19 34 20 37 22 38 C24 37 25 34 25 34" stroke="#d4a843" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  <!-- fiammelle -->
+  <path d="M22 38 C22 38 21 41 22 42 C23 41 22 38 22 38Z" fill="#d4a843" opacity="0.6"/>
+  <path d="M19 36 C18 38 19 40 19 40" stroke="#d4a843" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+  <path d="M25 36 C26 38 25 40 25 40" stroke="#d4a843" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+</svg></div>
       <h1 id="login-ws-title">Promemoria</h1>
       <p>Accedi al tuo account</p>
     </div>
