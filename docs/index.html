@@ -292,6 +292,62 @@
     .nav-item { font-size:9px; padding:8px 4px; }
     .stats-grid { grid-template-columns:1fr 1fr; gap:8px; }
   }
+
+  /* DARK THEME */
+  [data-theme="dark"] { --bg:#0f0f0f; --white:#1b1b1b; --border:#272727; --muted:#555; --mid:#aaa; --dark:#e0dbd3; }
+  [data-theme="dark"] body { background:var(--bg); color:var(--dark); }
+  [data-theme="dark"] .sidebar { background:#0a0a0a; border-right-color:#1a1a1a; }
+  [data-theme="dark"] .sidebar-brand { color:#ccc; }
+  [data-theme="dark"] .sidebar-tagline { color:#444; }
+  [data-theme="dark"] .nav-item { color:#555; }
+  [data-theme="dark"] .nav-item.active,[data-theme="dark"] .nav-item:hover { color:var(--gold); background:rgba(201,168,76,0.09); }
+  [data-theme="dark"] .content-area { background:var(--bg); }
+  [data-theme="dark"] .card,[data-theme="dark"] .stat-card { background:var(--white); border-color:var(--border); }
+  [data-theme="dark"] .modal,[data-theme="dark"] .login-card { background:var(--white); }
+  [data-theme="dark"] .modal-overlay { background:rgba(0,0,0,0.75); }
+  [data-theme="dark"] input,[data-theme="dark"] textarea,[data-theme="dark"] select { background:#1e1e1e; color:#ddd; border-color:#333; }
+  [data-theme="dark"] th { background:#0d0d0d; color:#444; border-color:#1e1e1e; }
+  [data-theme="dark"] td { border-color:#1c1c1c; }
+  [data-theme="dark"] tr:hover td { background:#161616; }
+  [data-theme="dark"] .page-title { color:var(--gold); }
+  [data-theme="dark"] .mobile-header { background:#0a0a0a; border-bottom-color:#1a1a1a; }
+  [data-theme="dark"] .mobile-bottom-nav { background:#0a0a0a; border-top-color:#1a1a1a; }
+  [data-theme="dark"] .cal-day { background:var(--white); border-color:var(--border); }
+  [data-theme="dark"] .cal-day.today { background:#18140a; border-color:#3a2f0a; }
+  [data-theme="dark"] .cal-day.other-month { background:#141414; }
+  [data-theme="dark"] .agenda-day-header { background:#141414; }
+  [data-theme="dark"] .badge { background:#252525; }
+  [data-theme="dark"] .filters { background:var(--white); border-color:var(--border); }
+  [data-theme="dark"] .ev-card { background:var(--white); border-color:var(--border); }
+  [data-theme="dark"] .stat-label { color:var(--muted); }
+
+  /* GLOBAL SEARCH */
+  .gsearch-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:3000; align-items:flex-start; justify-content:center; padding-top:80px; }
+  .gsearch-overlay.open { display:flex; }
+  .gsearch-box { background:var(--white); border-radius:18px; width:580px; max-width:95vw; box-shadow:0 28px 90px rgba(0,0,0,0.4); overflow:hidden; }
+  .gsearch-input-row { display:flex; align-items:center; gap:12px; padding:18px 20px; border-bottom:1px solid var(--border); }
+  .gsearch-input-row input { flex:1; border:none; outline:none; font-size:17px; background:transparent; color:var(--dark); font-family:inherit; }
+  .gsearch-result { display:flex; align-items:center; gap:12px; padding:11px 20px; cursor:pointer; border-bottom:1px solid var(--border); transition:background .12s; }
+  .gsearch-result:last-child { border-bottom:none; }
+  .gsearch-result:hover,.gsearch-result.gs-active { background:var(--bg); }
+  .gsearch-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; }
+  .gsearch-empty { padding:40px; text-align:center; color:var(--muted); font-size:14px; }
+  .gsearch-footer { padding:9px 20px; font-size:11px; color:var(--muted); border-top:1px solid var(--border); display:flex; gap:16px; }
+  kbd.hint { background:var(--bg); border:1px solid var(--border); border-radius:4px; padding:2px 6px; font-size:10px; font-family:monospace; }
+
+  /* THEME TOGGLE */
+  .theme-toggle-btn { width:100%; background:transparent; border:1px solid #2a2a2a; border-radius:6px; padding:6px 10px; color:#666; font-size:11px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:6px; font-family:inherit; transition:border-color .2s,color .2s; }
+  .theme-toggle-btn:hover { border-color:#555; color:#aaa; }
+
+  /* TEMPLATE SELECT */
+  .template-bar { display:flex; gap:8px; align-items:center; margin-bottom:4px; }
+  .template-bar select { flex:1; padding:8px 12px; font-size:13px; border:1.5px solid var(--border); border-radius:var(--rsm); background:#faf8f5; color:var(--dark); font-family:inherit; }
+  [data-theme="dark"] .template-bar select { background:#1e1e1e; }
+  .btn-save-tpl { background:transparent; border:1.5px solid var(--border); border-radius:6px; padding:7px 10px; font-size:12px; cursor:pointer; color:var(--mid); white-space:nowrap; font-family:inherit; }
+  .btn-save-tpl:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* COLLAB COLOR DOT */
+  .collab-dot { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:5px; vertical-align:middle; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -447,6 +503,7 @@
         <div class="sidebar-user-dot"></div>
         <span class="sidebar-user-name" id="topbar-username"></span>
       </div>
+      <button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-toggle-btn">🌙 <span id="theme-toggle-label">Tema scuro</span></button>
       <select id="lang-select" onchange="changeLang(this.value)" style="background:#252525;color:#888;border:1px solid #333;border-radius:6px;padding:5px 8px;font-size:11px;cursor:pointer;width:100%;margin-bottom:8px">
         <option value="it">🇮🇹 Italiano</option>
         <option value="en">🇬🇧 English</option>
@@ -656,6 +713,19 @@
   </div>
 </div>
 
+<!-- GLOBAL SEARCH OVERLAY -->
+<div class="gsearch-overlay" id="gsearch-overlay" onclick="closeGSearch(event)">
+  <div class="gsearch-box" onclick="event.stopPropagation()">
+    <div class="gsearch-input-row">
+      <span style="font-size:18px;color:var(--muted)">🔍</span>
+      <input type="text" id="gsearch-input" placeholder="Cerca eventi, persone, note..." oninput="runGSearch()" onkeydown="gSearchKeyNav(event)" autocomplete="off">
+      <kbd class="hint">ESC</kbd>
+    </div>
+    <div id="gsearch-results"><div class="gsearch-empty">Inizia a digitare per cercare…</div></div>
+    <div class="gsearch-footer"><span><kbd class="hint">↑↓</kbd> naviga</span><span><kbd class="hint">↵</kbd> apri</span><span><kbd class="hint">ESC</kbd> chiudi</span></div>
+  </div>
+</div>
+
 <!-- MODAL EVENTO -->
 <div class="modal-overlay" id="event-modal">
   <div class="modal">
@@ -669,6 +739,12 @@
       <input type="hidden" id="ev-collab-email">
     </div>
     <div class="form-group">
+      <div class="template-bar">
+        <select id="ev-template-select" onchange="applyTemplate(this.value)">
+          <option value="">📋 Usa template…</option>
+        </select>
+        <button class="btn-save-tpl" onclick="saveAsTemplate()" title="Salva come template">💾 Salva</button>
+      </div>
       <label data-i18n="modal.event.eventtitle">Titolo evento *</label>
       <input type="text" id="ev-title" placeholder="Riunione, Scadenza..." data-i18n-ph="modal.event.titlePh">
     </div>
@@ -1707,9 +1783,9 @@ function renderEvents() {
   }
 
   tbody.innerHTML = events.map(e => `
-    <tr>
+    <tr data-id="${e.id}">
       <td>
-        <div style="font-weight:500">${e.collaborator_name}</div>
+        <div style="font-weight:500;display:flex;align-items:center"><span class="collab-dot" style="background:${collabColor(e.collaborator_email)}"></span>${e.collaborator_name}</div>
         <div style="font-size:12px;color:#888">${e.collaborator_email}</div>
       </td>
       <td>
@@ -1728,11 +1804,14 @@ function renderEvents() {
       </td>
       <td style="white-space:nowrap">
         ${e.collaborator_email && !e.reminder_sent ? `<button class="btn btn-sm" style="background:#e65100;color:white;margin-right:4px" onclick="sendManualReminder(${e.id})" title="Invia promemoria ora">📧</button>` : ''}
-        <button class="btn btn-outline btn-sm" onclick="openEventModal(${e.id})" style="margin-right:4px">✏️</button>
+        <button class="btn btn-outline btn-sm" onclick="openEventModal(${e.id})" style="margin-right:4px" title="Modifica">✏️</button>
+        <button class="btn btn-outline btn-sm" onclick="duplicateEvent(${e.id})" style="margin-right:4px" title="Duplica">📋</button>
+        <button class="btn btn-outline btn-sm" onclick="copyEventLink(${e.id})" style="margin-right:4px" title="Copia link">🔗</button>
         <button class="btn btn-danger btn-sm" onclick="deleteEvent(${e.id})">🗑️</button>
       </td>
     </tr>
   `).join('');
+  addSwipeToCards();
 }
 
 function clearFilters() {
@@ -1796,6 +1875,7 @@ function openEventModal(id = null) {
     document.getElementById('ev-file').value = '';
     document.getElementById('ev-file-current').innerHTML = '';
   }
+  renderTemplateSelect();
   document.getElementById('event-modal').classList.add('open');
 }
 
@@ -2289,6 +2369,214 @@ function checkTodayReminders() {
   }
 }
 
+// ============================================================
+// TEMA SCURO
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('pa_theme', next);
+  updateThemeBtn();
+}
+function updateThemeBtn() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const btn = document.getElementById('theme-toggle-btn');
+  const lbl = document.getElementById('theme-toggle-label');
+  if (btn) btn.textContent = (isDark ? '☀️' : '🌙') + ' ';
+  if (lbl) lbl.textContent = isDark ? 'Tema chiaro' : 'Tema scuro';
+  if (btn && lbl) btn.appendChild(lbl);
+}
+(function initTheme() {
+  const saved = localStorage.getItem('pa_theme') || 'light';
+  document.documentElement.setAttribute('data-theme', saved);
+})();
+
+// ============================================================
+// COLORI COLLABORATORI
+function collabColor(email) {
+  if (!email) return '#999';
+  let h = 0;
+  for (let i = 0; i < email.length; i++) h = email.charCodeAt(i) + ((h << 5) - h);
+  const hue = ((h % 360) + 360) % 360;
+  return `hsl(${hue},55%,42%)`;
+}
+
+// ============================================================
+// DUPLICA EVENTO
+function duplicateEvent(id) {
+  const e = getEvents().find(ev => ev.id === id);
+  if (!e) return;
+  openEventModal(null);
+  setTimeout(() => {
+    document.getElementById('ev-title').value = e.title;
+    document.getElementById('ev-desc').value = e.description || '';
+    document.getElementById('ev-time').value = e.event_time;
+    document.getElementById('ev-notes').value = e.notes || '';
+    document.getElementById('ev-collab-name').value = e.collaborator_name;
+    document.getElementById('ev-collab-email').value = e.collaborator_email;
+    const sel = document.getElementById('ev-collab-select');
+    Array.from(sel.options).forEach(opt => {
+      try { if (opt.value && JSON.parse(opt.value).email === e.collaborator_email) sel.value = opt.value; } catch(x){}
+    });
+    document.getElementById('ev-reminder').value = '';
+    document.getElementById('event-modal-title').textContent = '📋 Duplica evento';
+  }, 0);
+}
+
+// ============================================================
+// LINK DIRETTO EVENTO
+function copyEventLink(id) {
+  const url = `${location.origin}${location.pathname}?evento=${id}`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast('🔗 Link copiato negli appunti!'));
+  } else {
+    prompt('Copia questo link:', url);
+  }
+}
+function showToast(msg) {
+  let t = document.getElementById('pa-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'pa-toast';
+    t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:30px;font-size:14px;z-index:9999;pointer-events:none;transition:opacity .3s';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.style.opacity = '0', 2500);
+}
+
+// ============================================================
+// RICERCA GLOBALE
+let gsearchActive = -1;
+function openGSearch() {
+  document.getElementById('gsearch-overlay').classList.add('open');
+  document.getElementById('gsearch-input').value = '';
+  document.getElementById('gsearch-results').innerHTML = '<div class="gsearch-empty">Inizia a digitare per cercare…</div>';
+  gsearchActive = -1;
+  setTimeout(() => document.getElementById('gsearch-input').focus(), 50);
+}
+function closeGSearch(e) {
+  if (e && e.target !== document.getElementById('gsearch-overlay')) return;
+  document.getElementById('gsearch-overlay').classList.remove('open');
+}
+function closeGSearchForce() {
+  document.getElementById('gsearch-overlay').classList.remove('open');
+}
+function runGSearch() {
+  const q = document.getElementById('gsearch-input').value.toLowerCase().trim();
+  const res = document.getElementById('gsearch-results');
+  gsearchActive = -1;
+  if (!q) { res.innerHTML = '<div class="gsearch-empty">Inizia a digitare per cercare…</div>'; return; }
+  const events = getEvents().filter(e =>
+    e.title.toLowerCase().includes(q) ||
+    e.collaborator_name.toLowerCase().includes(q) ||
+    (e.collaborator_email||'').toLowerCase().includes(q) ||
+    (e.description||'').toLowerCase().includes(q) ||
+    (e.notes||'').toLowerCase().includes(q)
+  ).slice(0, 20);
+  if (!events.length) { res.innerHTML = '<div class="gsearch-empty">Nessun risultato trovato</div>'; return; }
+  res.innerHTML = events.map((e, i) => {
+    const col = collabColor(e.collaborator_email);
+    const hl = s => s ? s.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'), m => `<mark style="background:#c9a84c33;color:inherit">${m}</mark>`) : '';
+    return `<div class="gsearch-result" data-id="${e.id}" onclick="gsearchOpen(${e.id})">
+      <span class="gsearch-dot" style="background:${col}"></span>
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:500;font-size:14px">${hl(e.title)}</div>
+        <div style="font-size:12px;color:var(--muted)">${hl(e.collaborator_name)} · ${formatDate(e.event_date)} ${e.event_time}</div>
+      </div>
+      <span style="font-size:11px;color:var(--muted);flex-shrink:0">${e.reminder_sent ? '✅' : e.reminder_datetime ? '⏳' : ''}</span>
+    </div>`;
+  }).join('');
+}
+function gsearchOpen(id) {
+  closeGSearchForce();
+  showPage('events');
+  setTimeout(() => openEventModal(id), 150);
+}
+function gSearchKeyNav(e) {
+  const items = document.querySelectorAll('#gsearch-results .gsearch-result');
+  if (e.key === 'Escape') { closeGSearchForce(); return; }
+  if (e.key === 'ArrowDown') { gsearchActive = Math.min(gsearchActive + 1, items.length - 1); }
+  else if (e.key === 'ArrowUp') { gsearchActive = Math.max(gsearchActive - 1, 0); }
+  else if (e.key === 'Enter' && gsearchActive >= 0) { items[gsearchActive].click(); return; }
+  else return;
+  items.forEach((el, i) => el.classList.toggle('gs-active', i === gsearchActive));
+  if (items[gsearchActive]) items[gsearchActive].scrollIntoView({ block:'nearest' });
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === '/' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement.tagName)) {
+    e.preventDefault();
+    openGSearch();
+  }
+  if (e.key === 'Escape' && document.getElementById('gsearch-overlay').classList.contains('open')) {
+    closeGSearchForce();
+  }
+});
+
+// ============================================================
+// SWIPE AZIONI (mobile)
+function addSwipeToCards() {
+  if (window.innerWidth > 768) return;
+  document.querySelectorAll('#events-table tr[data-id]').forEach(row => {
+    let sx = 0, sy = 0;
+    const id = parseInt(row.dataset.id);
+    row.addEventListener('touchstart', ev => { sx = ev.touches[0].clientX; sy = ev.touches[0].clientY; }, { passive:true });
+    row.addEventListener('touchend', ev => {
+      const dx = ev.changedTouches[0].clientX - sx;
+      const dy = ev.changedTouches[0].clientY - sy;
+      if (Math.abs(dy) > Math.abs(dx) || Math.abs(dx) < 60) return;
+      if (dx > 60) {
+        const ev2 = getEvents().find(x => x.id === id);
+        if (ev2 && ev2.collaborator_email && !ev2.reminder_sent) { sendManualReminder(id); showToast('📧 Promemoria inviato!'); }
+        else showToast('⚠️ Nessun promemoria da inviare');
+      } else if (dx < -60) {
+        if (confirm('Eliminare questo evento?')) deleteEvent(id);
+      }
+    }, { passive:true });
+  });
+}
+
+// ============================================================
+// TEMPLATE EVENTI
+function getTemplates() { return JSON.parse(localStorage.getItem('pa_templates') || '[]'); }
+function renderTemplateSelect() {
+  const sel = document.getElementById('ev-template-select');
+  if (!sel) return;
+  const tpls = getTemplates();
+  sel.innerHTML = `<option value="">📋 Usa template…</option>` +
+    tpls.map((t, i) => `<option value="${i}">${t.name}</option>`).join('');
+}
+function applyTemplate(idx) {
+  if (idx === '') return;
+  const tpl = getTemplates()[parseInt(idx)];
+  if (!tpl) return;
+  document.getElementById('ev-title').value = tpl.title || '';
+  document.getElementById('ev-desc').value = tpl.desc || '';
+  if (tpl.time) document.getElementById('ev-time').value = tpl.time;
+}
+function saveAsTemplate() {
+  const title = document.getElementById('ev-title').value.trim();
+  if (!title) { showToast('⚠️ Inserisci prima un titolo'); return; }
+  const tpls = getTemplates();
+  if (tpls.find(t => t.name === title)) { showToast('Template già esistente'); return; }
+  tpls.push({ name: title, title, desc: document.getElementById('ev-desc').value, time: document.getElementById('ev-time').value });
+  localStorage.setItem('pa_templates', JSON.stringify(tpls));
+  renderTemplateSelect();
+  showToast('💾 Template salvato!');
+}
+
+// ============================================================
+// PWA BADGE
+function updateAppBadge() {
+  const today = new Date().toISOString().split('T')[0];
+  const count = getEvents().filter(e => e.event_date === today).length;
+  if ('setAppBadge' in navigator) {
+    count > 0 ? navigator.setAppBadge(count) : navigator.clearAppBadge();
+  }
+}
+
 // Auto-login se sessione attiva
 window.onload = function() {
   const user = getCurrentUser();
@@ -2307,10 +2595,15 @@ window.onload = function() {
     if (user.role === 'admin') {
       document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'block');
     }
-    initApp();
+    initApp().then(() => {
+      updateAppBadge();
+      const urlEvento = new URLSearchParams(location.search).get('evento');
+      if (urlEvento) { showPage('events'); setTimeout(() => openEventModal(parseInt(urlEvento)), 400); }
+    });
     initNotifications();
     checkReminders();
     checkTodayReminders();
+    updateThemeBtn();
     setInterval(checkTodayReminders, 60000);
     setInterval(checkRecurringReminders, 60000);
     checkRecurringReminders();
