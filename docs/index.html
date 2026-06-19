@@ -363,7 +363,7 @@
         <div class="table-container">
           <table>
             <thead>
-              <tr><th>Username</th><th>Nome</th><th>Ruolo</th><th>Azioni</th></tr>
+              <tr><th>Username</th><th>Nome</th><th>Email</th><th>Ruolo</th><th>Azioni</th></tr>
             </thead>
             <tbody id="users-table"></tbody>
           </table>
@@ -528,6 +528,10 @@
     <div class="form-group">
       <label>Nome completo</label>
       <input type="text" id="usr-name" placeholder="Mario Rossi">
+    </div>
+    <div class="form-group">
+      <label>Email *</label>
+      <input type="email" id="usr-email" placeholder="mario@azienda.it">
     </div>
     <div class="form-group">
       <label>Password *</label>
@@ -1328,6 +1332,7 @@ function renderUsers() {
     <tr>
       <td><strong>${u.username}</strong></td>
       <td>${u.name || '—'}</td>
+      <td style="font-size:13px;color:#777">${u.email || '—'}</td>
       <td><span class="badge ${u.role === 'admin' ? 'badge-danger' : 'badge-info'}">${u.role}</span></td>
       <td>
         <button class="btn btn-outline btn-sm" onclick="openUserModal(${u.id})" style="margin-right:4px">✏️</button>
@@ -1345,6 +1350,7 @@ function openUserModal(id = null) {
     document.getElementById('user-modal-title').textContent = 'Modifica utente';
     document.getElementById('usr-username').value = u.username;
     document.getElementById('usr-name').value = u.name || '';
+    document.getElementById('usr-email').value = u.email || '';
     document.getElementById('usr-pass').value = '';
     document.getElementById('usr-role').value = u.role;
     document.getElementById('usr-username').disabled = true;
@@ -1352,6 +1358,7 @@ function openUserModal(id = null) {
     document.getElementById('user-modal-title').textContent = 'Nuovo utente';
     document.getElementById('usr-username').value = '';
     document.getElementById('usr-name').value = '';
+    document.getElementById('usr-email').value = '';
     document.getElementById('usr-pass').value = '';
     document.getElementById('usr-role').value = 'user';
     document.getElementById('usr-username').disabled = false;
@@ -1367,24 +1374,26 @@ function closeUserModal() {
 function saveUser() {
   const username = document.getElementById('usr-username').value.trim();
   const name = document.getElementById('usr-name').value.trim();
+  const email = document.getElementById('usr-email').value.trim();
   const pass = document.getElementById('usr-pass').value;
   const role = document.getElementById('usr-role').value;
 
   if (!username) { document.getElementById('user-error').textContent = 'Username obbligatorio'; return; }
+  if (!email) { document.getElementById('user-error').textContent = 'Email obbligatoria'; return; }
   if (!editingUserId && !pass) { document.getElementById('user-error').textContent = 'Password obbligatoria'; return; }
 
   const users = getUsers();
 
   if (editingUserId) {
     const idx = users.findIndex(u => u.id === editingUserId);
-    users[idx] = { ...users[idx], name, role, ...(pass ? { password: pass } : {}) };
+    users[idx] = { ...users[idx], name, email, role, ...(pass ? { password: pass } : {}) };
   } else {
     if (users.find(u => u.username === username)) {
       document.getElementById('user-error').textContent = 'Username già esistente';
       return;
     }
     const newId = Math.max(0, ...users.map(u => u.id)) + 1;
-    users.push({ id: newId, username, name, password: pass, role });
+    users.push({ id: newId, username, name, email, password: pass, role });
   }
 
   saveUsers(users);
