@@ -131,6 +131,31 @@
   /* CALENDAR */
   .calendar-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:8px; }
   .calendar-nav { display:flex; gap:8px; }
+  .cal-view-toggle { display:flex; gap:4px; background:#f0ece3; border-radius:8px; padding:3px; }
+  .cal-view-btn { border:none; background:transparent; padding:6px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer; color:#888; letter-spacing:0.5px; transition:all .2s; }
+  .cal-view-btn.active { background:var(--dark); color:var(--white); }
+
+  /* AGENDA VIEW */
+  .agenda-list { display:flex; flex-direction:column; gap:0; }
+  .agenda-day { border-bottom:1px solid var(--border); }
+  .agenda-day:last-child { border-bottom:none; }
+  .agenda-day-header { display:flex; align-items:center; gap:12px; padding:14px 16px 10px; background:#faf8f4; border-bottom:1px solid var(--border); position:sticky; top:0; }
+  .agenda-day-num { font-size:28px; font-weight:900; color:var(--dark); line-height:1; font-family:Georgia,serif; min-width:36px; text-align:center; }
+  .agenda-day-num.today-num { color:var(--gold); }
+  .agenda-day-info { display:flex; flex-direction:column; }
+  .agenda-day-weekday { font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#999; }
+  .agenda-day-month { font-size:12px; color:#bbb; }
+  .agenda-event-row { display:flex; align-items:flex-start; gap:14px; padding:12px 16px; border-bottom:1px solid #f5f2ec; cursor:pointer; transition:background .15s; }
+  .agenda-event-row:last-child { border-bottom:none; }
+  .agenda-event-row:hover { background:#fdf9f0; }
+  .agenda-time { font-size:13px; font-weight:700; color:var(--dark); min-width:44px; padding-top:2px; }
+  .agenda-dot { width:10px; height:10px; border-radius:50%; background:var(--gold); flex-shrink:0; margin-top:5px; }
+  .agenda-dot.sent { background:#4caf50; }
+  .agenda-body { flex:1; }
+  .agenda-title { font-size:14px; font-weight:600; color:var(--dark); }
+  .agenda-person { font-size:12px; color:#888; margin-top:2px; }
+  .agenda-badge { display:inline-block; font-size:10px; padding:2px 7px; border-radius:10px; margin-top:4px; }
+  .agenda-empty { text-align:center; padding:48px; color:#bbb; font-size:14px; }
   .btn-nav { background:var(--bg); color:var(--dark); border:1px solid var(--border); padding:9px 16px; border-radius:var(--rsm); cursor:pointer; font-size:18px; font-weight:700; }
   .btn-nav:hover { border-color:var(--gold); color:var(--gold); }
   .calendar-month { font-size:16px; font-weight:800; color:var(--dark); letter-spacing:2px; text-transform:uppercase; font-family:Georgia,serif; }
@@ -219,11 +244,48 @@
     .btn-primary { font-size:15px; padding:17px; }
 
     /* Calendar */
-    .cal-day { min-height:56px; padding:4px; }
-    .cal-day-name { font-size:10px; letter-spacing:0; }
-    .cal-day-num { font-size:13px; }
-    .cal-event { font-size:9px; padding:1px 3px; }
-    .calendar-month { font-size:15px; }
+    .cal-day { min-height:52px; padding:3px; }
+    .cal-day-name { font-size:9px; letter-spacing:0; padding:5px 0; }
+    .cal-day-num { font-size:12px; }
+    .cal-event { font-size:8px; padding:1px 3px; }
+    .calendar-month { font-size:14px; letter-spacing:1px; }
+    .calendar-header { flex-wrap:wrap; gap:6px; }
+    .cal-view-toggle { width:100%; justify-content:center; }
+    .cal-view-btn { flex:1; text-align:center; }
+
+    /* Agenda mobile */
+    .agenda-day-header { padding:10px 12px 8px; }
+    .agenda-day-num { font-size:22px; }
+    .agenda-event-row { padding:10px 12px; gap:10px; }
+    .agenda-title { font-size:13px; }
+
+    /* Tabella eventi → cards su mobile */
+    .events-table-wrap { overflow:visible; }
+    .events-table-wrap table, .events-table-wrap thead, .events-table-wrap tbody,
+    .events-table-wrap th, .events-table-wrap td, .events-table-wrap tr { display:block; }
+    .events-table-wrap thead { display:none; }
+    .events-table-wrap tr {
+      background:var(--white); border:1px solid var(--border);
+      border-radius:12px; margin-bottom:12px; padding:14px 16px;
+      box-shadow:0 1px 4px rgba(0,0,0,.05);
+    }
+    .events-table-wrap td { padding:4px 0; border:none; font-size:14px; }
+    .events-table-wrap td:nth-child(1)::before { content:'👤 '; }
+    .events-table-wrap td:nth-child(2)::before { content:'📌 '; }
+    .events-table-wrap td:nth-child(3)::before { content:'📅 '; font-size:12px; color:#888; }
+    .events-table-wrap td:nth-child(4)::before { content:'🕐 '; font-size:12px; color:#888; }
+    .events-table-wrap td:nth-child(5) { font-size:12px; color:#aaa; }
+    .events-table-wrap td:nth-child(5)::before { content:'⏰ '; }
+    .events-table-wrap td:nth-child(7) { margin-top:10px; display:flex; gap:8px; }
+    .events-table-wrap td:nth-child(7) .btn { flex:1; }
+
+    /* Filtri stacked */
+    .filters { gap:8px; }
+    .filters input, .filters select { font-size:15px; padding:11px 13px; }
+
+    /* Modal full screen su mobile */
+    .modal-overlay { align-items:flex-end; }
+    .modal { border-radius:20px 20px 0 0; max-height:92vh; width:100%; margin:0; }
   }
 
   @media (max-width:400px) {
@@ -450,7 +512,7 @@
         <button class="btn btn-outline btn-sm" onclick="clearFilters()">Rimuovi filtri</button>
         <span id="events-count" style="color:#888;font-size:13px;margin-left:auto"></span>
       </div>
-      <div class="card" style="padding:0">
+      <div class="card events-table-wrap" style="padding:0">
         <div class="table-container">
           <table>
             <thead>
@@ -486,10 +548,17 @@
             <button class="btn-nav" onclick="calNav(1)">›</button>
           </div>
           <h2 id="cal-title" class="calendar-month"></h2>
-          <button class="btn btn-outline btn-sm" onclick="calToday()">Oggi</button>
-          <button class="btn btn-outline btn-sm" onclick="exportCalendarPDF()" title="Esporta PDF">📄 PDF</button>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <div class="cal-view-toggle">
+              <button class="cal-view-btn active" id="btn-view-grid" onclick="setCalView('grid')">☰ Griglia</button>
+              <button class="cal-view-btn" id="btn-view-agenda" onclick="setCalView('agenda')">≡ Agenda</button>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="calToday()">Oggi</button>
+            <button class="btn btn-outline btn-sm" onclick="exportCalendarPDF()" title="Esporta PDF">📄 PDF</button>
+          </div>
         </div>
         <div class="calendar-grid" id="cal-grid"></div>
+        <div class="agenda-list" id="cal-agenda" style="display:none"></div>
       </div>
     </div>
 
@@ -1475,14 +1544,73 @@ function deleteEvent(id) {
 // CALENDARIO
 // ============================================================
 let calDate = new Date();
+let calView = 'grid';
 const MONTHS = ['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
 const DAYS = ['Dom','Lun','Mar','Mer','Gio','Ven','Sab'];
+const DAYS_FULL = ['Domenica','Lunedì','Martedì','Mercoledì','Giovedì','Venerdì','Sabato'];
 
 function calNav(delta) { calDate.setMonth(calDate.getMonth() + delta); renderCalendar(); }
 function calToday() { calDate = new Date(); renderCalendar(); }
 
+function setCalView(v) {
+  calView = v;
+  document.getElementById('btn-view-grid').classList.toggle('active', v === 'grid');
+  document.getElementById('btn-view-agenda').classList.toggle('active', v === 'agenda');
+  renderCalendar();
+}
+
+function renderAgenda() {
+  const events = getEvents();
+  const year = calDate.getFullYear();
+  const month = calDate.getMonth();
+  const lastDate = new Date(year, month + 1, 0).getDate();
+  const today = new Date().toISOString().split('T')[0];
+
+  let html = '';
+  let hasAny = false;
+
+  for (let d = 1; d <= lastDate; d++) {
+    const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dayEvents = events.filter(e => e.event_date === dateStr).sort((a,b) => a.event_time.localeCompare(b.event_time));
+    if (!dayEvents.length) continue;
+    hasAny = true;
+    const isToday = dateStr === today;
+    const dow = new Date(dateStr).getDay();
+    html += `<div class="agenda-day">
+      <div class="agenda-day-header">
+        <div class="agenda-day-num${isToday ? ' today-num' : ''}">${d}</div>
+        <div class="agenda-day-info">
+          <div class="agenda-day-weekday">${DAYS_FULL[dow]}</div>
+          <div class="agenda-day-month">${MONTHS[month]} ${year}</div>
+        </div>
+        ${isToday ? `<span style="margin-left:auto;font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px">Oggi</span>` : ''}
+      </div>
+      ${dayEvents.map(e => `
+        <div class="agenda-event-row" onclick="openEventModal(${e.id})">
+          <div class="agenda-time">${e.event_time}</div>
+          <div class="agenda-dot${e.reminder_sent ? ' sent' : ''}"></div>
+          <div class="agenda-body">
+            <div class="agenda-title">${e.title}</div>
+            <div class="agenda-person">${e.collaborator_name} · ${e.collaborator_email}</div>
+            ${e.description ? `<div style="font-size:11px;color:#aaa;margin-top:2px">${e.description}</div>` : ''}
+            ${e.notes ? `<div style="font-size:11px;color:#bbb;margin-top:2px;font-style:italic">${e.notes}</div>` : ''}
+            ${e.reminder_datetime ? `<span class="agenda-badge" style="background:${e.reminder_sent ? '#e8f5e9' : '#fff8e1'};color:${e.reminder_sent ? '#388e3c' : '#f57f17'}">${e.reminder_sent ? '✓ Inviato' : '⏰ In attesa'}</span>` : ''}
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+
+  if (!hasAny) html = `<div class="agenda-empty">📭 Nessun evento in ${MONTHS[month]}</div>`;
+  document.getElementById('cal-agenda').innerHTML = html;
+}
+
 function renderCalendar() {
   document.getElementById('cal-title').textContent = MONTHS[calDate.getMonth()] + ' ' + calDate.getFullYear();
+  const isAgenda = calView === 'agenda';
+  document.getElementById('cal-grid').style.display = isAgenda ? 'none' : 'grid';
+  document.getElementById('cal-agenda').style.display = isAgenda ? 'flex' : 'none';
+  if (isAgenda) { renderAgenda(); return; }
   const events = getEvents();
   const year = calDate.getFullYear();
   const month = calDate.getMonth();
