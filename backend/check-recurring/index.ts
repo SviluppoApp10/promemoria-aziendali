@@ -33,18 +33,18 @@ Deno.serve(async (req) => {
 
   // --- Invio email evento normale ---
   if (body.type === 'event') {
-    const { to_email, to_name, titolo, descrizione, data, ora } = body
+    const { to_email, to_name, titolo, descrizione, data, ora, mittente } = body
     try {
       await sendEmail(
         to_email,
         to_name || to_email,
-        `Promemoria evento: ${titolo}`,
+        mittente ? `${mittente} ti ha inviato un promemoria` : `Promemoria: ${titolo}`,
         `
         <div style="font-family:Arial,sans-serif;max-width:500px;margin:0 auto;padding:32px">
+          ${mittente ? `<p style="color:#d4a843;font-size:14px;font-weight:700;margin-bottom:8px;text-transform:uppercase;letter-spacing:1px">${mittente} ti ha inviato un promemoria</p>` : ''}
           <h2 style="color:#1a1a1a;border-bottom:2px solid #d4a843;padding-bottom:12px">${titolo}</h2>
           <p style="color:#555;font-size:16px;margin-top:16px">${descrizione || ''}</p>
           <p style="color:#999;margin-top:24px;font-size:14px">Data: <strong>${data}</strong> — Ora: <strong>${ora || 'N/D'}</strong></p>
-          <p style="color:#aaa;margin-top:8px;font-size:12px">Collaboratore: ${to_name}</p>
         </div>
         `
       )

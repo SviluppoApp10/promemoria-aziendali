@@ -423,15 +423,13 @@
 <div class="modal-overlay" id="event-modal">
   <div class="modal">
     <div class="modal-title" id="event-modal-title">Nuovo evento</div>
-    <div class="grid-2">
-      <div class="form-group">
-        <label>Nome collaboratore *</label>
-        <input type="text" id="ev-collab-name" placeholder="Mario Rossi">
-      </div>
-      <div class="form-group">
-        <label>Email collaboratore *</label>
-        <input type="email" id="ev-collab-email" placeholder="mario@azienda.it">
-      </div>
+    <div class="form-group">
+      <label>Destinatario *</label>
+      <select id="ev-collab-select" style="width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:var(--rsm);font-size:16px;font-family:inherit;background:#faf8f5;color:var(--dark)">
+        <option value="">Seleziona utente...</option>
+      </select>
+      <input type="hidden" id="ev-collab-name">
+      <input type="hidden" id="ev-collab-email">
     </div>
     <div class="form-group">
       <label>Titolo evento *</label>
@@ -1162,11 +1160,30 @@ function clearFilters() {
 function openEventModal(id = null) {
   editingEventId = id;
   document.getElementById('event-error').textContent = '';
+  // Popola select utenti
+  const sel = document.getElementById('ev-collab-select');
+  sel.innerHTML = '<option value="">Seleziona utente...</option>';
+  (usersCache || []).forEach(u => {
+    const opt = document.createElement('option');
+    opt.value = JSON.stringify({ name: u.name || u.username, email: u.email });
+    opt.textContent = (u.name || u.username) + (u.email ? ' — ' + u.email : '');
+    sel.appendChild(opt);
+  });
+  sel.onchange = function() {
+    if (!this.value) return;
+    const u = JSON.parse(this.value);
+    document.getElementById('ev-collab-name').value = u.name;
+    document.getElementById('ev-collab-email').value = u.email;
+  };
   if (id) {
     const e = getEvents().find(ev => ev.id === id);
     document.getElementById('event-modal-title').textContent = 'Modifica evento';
     document.getElementById('ev-collab-name').value = e.collaborator_name;
     document.getElementById('ev-collab-email').value = e.collaborator_email;
+    // Pre-seleziona utente nella select
+    Array.from(sel.options).forEach(opt => {
+      if (opt.value && JSON.parse(opt.value).email === e.collaborator_email) sel.value = opt.value;
+    });
     document.getElementById('ev-title').value = e.title;
     document.getElementById('ev-desc').value = e.description || '';
     document.getElementById('ev-date').value = e.event_date;
@@ -1195,6 +1212,8 @@ function closeEventModal() {
 }
 
 function saveEvent() {
+  const selVal = document.getElementById('ev-collab-select').value;
+  if (selVal) { const u = JSON.parse(selVal); document.getElementById('ev-collab-name').value = u.name; document.getElementById('ev-collab-email').value = u.email; }
   const name = document.getElementById('ev-collab-name').value.trim();
   const email = document.getElementById('ev-collab-email').value.trim();
   const title = document.getElementById('ev-title').value.trim();
@@ -1202,7 +1221,7 @@ function saveEvent() {
   const time = document.getElementById('ev-time').value;
 
   if (!name || !email || !title || !date || !time) {
-    document.getElementById('event-error').textContent = 'Compila tutti i campi obbligatori (*)';
+    document.getElementById('event-error').textContent = 'Seleziona un destinatario e compila tutti i campi (*)';
     return;
   }
 
@@ -1230,6 +1249,7 @@ function saveEvent() {
       reminder_datetime: reminder || '',
       reminder_sent: false,
       created_by: currentUser ? currentUser.username : '',
+      created_by_name: currentUser ? (currentUser.name || currentUser.username) : '',
       workspace_id: currentWorkspace || parseInt(sessionStorage.getItem('pa_workspace') || '1')
     };
     saveEventToSheets(newEvent).then(() => loadEventsFromSheets().then(() => { renderEvents(); renderDashboard(); }));
@@ -1446,8 +1466,9 @@ function checkReminders() {
 
     // Notifica se il promemoria è tra -5 e +5 minuti
     if (diffMinutes >= -5 && diffMinutes <= 5) {
-      const n = new Notification('🔔 Promemoria Aziendali', {
-        body: `${e.title}\n${e.collaborator_name} — ${formatDate(e.event_date)} alle ${e.event_time}`,
+      const mittente = e.created_by_name || e.created_by || '';
+      const n = new Notification('Promemoria Aziendali', {
+        body: `${mittente ? mittente + ' ti ha inviato: ' : ''}${e.title}\n${formatDate(e.event_date)} alle ${e.event_time}`,
         icon: 'https://lorybiagio14.github.io/promemoria-aziendali/icon.png',
         tag: 'reminder-' + e.id,
       });
@@ -1477,7 +1498,8 @@ function sendReminderEmail(event) {
     titolo: event.title,
     descrizione: event.description || 'Nessuna nota',
     data: formatDate(event.event_date),
-    ora: event.event_time
+    ora: event.event_time,
+    mittente: event.created_by_name || event.created_by || ''
   }).then(function() {
     console.log('Email inviata a ' + event.collaborator_email);
     const events = getEvents();
