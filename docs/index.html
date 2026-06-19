@@ -611,17 +611,18 @@ async function loadUsersFromSupabase(workspaceId) {
   } catch(err) { console.error('Errore caricamento utenti:', err); }
 }
 
-async function saveUserToSupabase(user) {
+async function saveUserToSupabase(user, isNew) {
   try {
-    if (user.id) {
-      const { id, created_at, ...rest } = user;
-      await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${id}`, {
-        method: 'PATCH', headers: sbHeaders(), body: JSON.stringify(rest)
+    const wsId = currentWorkspace || parseInt(sessionStorage.getItem('pa_workspace') || '1');
+    const { id, created_at, ...rest } = user;
+    if (isNew) {
+      const payload = { ...rest, workspace_id: wsId };
+      await fetch(`${SUPABASE_URL}/rest/v1/users`, {
+        method: 'POST', headers: sbHeaders(), body: JSON.stringify(payload)
       });
     } else {
-      const { id, created_at, ...rest } = user;
-      await fetch(`${SUPABASE_URL}/rest/v1/users`, {
-        method: 'POST', headers: sbHeaders(), body: JSON.stringify(rest)
+      await fetch(`${SUPABASE_URL}/rest/v1/users?id=eq.${id}`, {
+        method: 'PATCH', headers: sbHeaders(), body: JSON.stringify(rest)
       });
     }
   } catch(err) { console.error('Errore salvataggio utente:', err); }
@@ -1396,9 +1397,10 @@ function saveUser() {
     users.push({ id: newId, username, name, email, password: pass, role });
   }
 
+  const isNew = !editingUserId;
+  const savedUser = isNew ? users[users.length - 1] : users.find(u => u.id === editingUserId);
+  saveUserToSupabase(savedUser, isNew).then(() => loadUsersFromSupabase().then(() => renderUsers()));
   saveUsers(users);
-  const savedUser = editingUserId ? users.find(u => u.id === editingUserId) : users[users.length - 1];
-  saveUserToSupabase(savedUser).then(() => loadUsersFromSupabase().then(() => renderUsers()));
   closeUserModal();
   renderUsers();
 }
